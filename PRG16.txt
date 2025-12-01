@@ -1,0 +1,47 @@
+def find(parent, i):
+    if parent[i] != i:
+        parent[i] = find(parent, parent[i])
+    return parent[i]
+
+def union(parent, rank, x, y):
+    xroot = find(parent, x)
+    yroot = find(parent, y)
+
+    if rank[xroot] > rank[yroot]:
+        parent[yroot] = xroot
+    elif rank[xroot] < rank[yroot]:
+        parent[xroot] = yroot
+    else:
+        parent[yroot] = xroot
+        rank[xroot] += 1
+
+def kruskal(n, edges):
+    parent = list(range(n))
+    rank = [0] * n
+    mst = []
+    cost = 0
+
+    edges.sort(key=lambda x: x[2])
+
+    for u, v, w in edges:
+        if find(parent, u) != find(parent, v):
+            union(parent, rank, u, v)
+            mst.append((u, v, w))
+            cost += w
+
+    print("Edges in MST:")
+    for u, v, w in mst:
+        print(f"{u} -- {v} = {w}")
+
+    print("Minimum Cost =", cost)
+
+
+n, e = map(int, input("Enter vertices and edges: ").split())
+edges = []
+
+print("Enter edges (u v w):")
+for i in range(e):
+    u, v, w = map(int, input().split())
+    edges.append((u, v, w))
+
+kruskal(n, edges)

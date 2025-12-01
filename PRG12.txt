@@ -1,0 +1,20 @@
+def subset_sum(arr, target, i=0, path=[]):
+    if sum(path) == target:
+        print(path)
+        return
+
+    if i >= len(arr) or sum(path) > target:
+        return
+
+    # Include current element
+    subset_sum(arr, target, i+1, path + [arr[i]])
+
+    # Exclude current element
+    subset_sum(arr, target, i+1, path)
+
+
+arr = list(map(int, input("Enter elements: ").split()))
+target = int(input("Enter target sum: "))
+
+print("Subsets with sum =", target, ":")
+subset_sum(arr, target)
